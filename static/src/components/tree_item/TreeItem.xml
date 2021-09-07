@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="owl_tutorial_views.TreeItem" owl="1">
+        <div class="tree-item-wrapper">
+            <div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center owl-tree-item">
+                <a href="#" t-on-click.stop.prevent="toggleChildren" t-if="props.item.child_id.length > 0">
+                    <t t-esc="props.item.display_name"/>
+                    <i t-attf-class="pl-2 fa {{ state.childrenVisible ? 'fa-caret-down': 'fa-caret-right'}}" ></i>
+                </a>
+                <span t-else="">
+                    <t t-esc="props.item.display_name"/>
+                </span>
+                <span class="badge badge-primary badge-pill" t-esc="props.item.product_count">4</span>
+            </div>
+            <t t-if="props.item.child_id.length > 0">
+                <div class="d-flex pl-4 py-1 flex-row treeview" t-if="props.item.children and props.item.children.length > 0 and state.childrenVisible">
+                    <div class="list-group">
+                        <t t-foreach="props.item.children" t-as="child_item">
+                            <TreeItem item="child_item"/>
+                        </t>
+                    </div>
+                </div>
+            </t>
+        </div>
+    </t>
+</templates>
