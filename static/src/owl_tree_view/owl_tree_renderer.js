@@ -15,15 +15,7 @@ odoo.define("owl_tutorial_views.OWLTreeRenderer", function (require) {
     constructor(parent, props) {
       super(...arguments);
       this.qweb = new QWeb(this.env.isDebug(), { _s: session.origin });
-      this.state = useState({
-        localItems: props.items || [],
-      });
-    }
-
-    willUpdateProps(nextProps) {
-      Object.assign(this.state, {
-        localItems: nextProps.items,
-      });
+      this.state = useState({});
     }
   }
 

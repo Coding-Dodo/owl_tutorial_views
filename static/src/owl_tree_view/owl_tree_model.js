@@ -4,6 +4,40 @@ odoo.define("owl_tutorial_views.OWLTreeModel", function (require) {
   var AbstractModel = require("web.AbstractModel");
 
   const OWLTreeModel = AbstractModel.extend({
+    changeParent: async function (id, parent_id) {
+      await this._rpc({
+        model: this.modelName,
+        method: "write",
+        args: [
+          [id],
+          {
+            parent_id: parent_id,
+          },
+        ],
+      });
+    },
+
+    refreshNode: async function (id) {
+      var self = this;
+      var result = null;
+      await this._rpc({
+        model: this.modelName,
+        method: "search_read",
+        kwargs: {
+          domain: [["id", "=", id]],
+        },
+      }).then(function (itemUpdated) {
+        let path = itemUpdated[0].parent_path;
+        let target_node = self.__target_parent_node_with_path(
+          path.split("/").filter((i) => i),
+          self.data.items
+        );
+        target_node = itemUpdated[0];
+        result = itemUpdated[0];
+      });
+      return result;
+    },
+
     /**
      * Add a groupBy to rowGroupBys or colGroupBys according to provided type.
      *
@@ -24,6 +58,7 @@ odoo.define("owl_tutorial_views.OWLTreeModel", function (require) {
           self.data.items
         );
         target_node.children = children;
+        target_node.child_id = children.map((i) => i.id);
       });
     },
 
@@ -70,9 +105,10 @@ odoo.define("owl_tutorial_views.OWLTreeModel", function (require) {
     },
 
     __reload: function (handle, params) {
-      if ("domain" in params) {
-        this.domain = params.domain;
-      }
+      // if ("domain" in params) {
+      //   this.domain = params.domain;
+      // }
+      this.domain = [["parent_id", "=", false]];
       return this._fetchData();
     },
 
