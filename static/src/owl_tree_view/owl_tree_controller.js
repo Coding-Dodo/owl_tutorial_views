@@ -14,13 +14,15 @@ odoo.define("owl_tutorial_views.OWLTreeController", function (require) {
      * @param model
      * @param renderer
      * @param {Object} params
-     * @param {String} params.title The title used in schedule activity dialog
      */
     init: function (parent, model, renderer, params) {
       this._super.apply(this, arguments);
-      this.title = params.title;
     },
 
+    /**
+     * @param {Object} ev
+     * @param {Object} ev.data contains the payload
+     */
     _onTreeItemClicked: async function (ev) {
       ev.stopPropagation();
       await this.model.expandChildrenOf(

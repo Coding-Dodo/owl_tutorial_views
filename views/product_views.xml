@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <record id="blog_post_view_owl_tree_view" model="ir.ui.view">
+    <record id="product_category_view_owl_tree_view" model="ir.ui.view">
         <field name="name">Product Categories</field>
         <field name="model">product.category</field>
         <field name="arch" type="xml">
-            <owl_tree></owl_tree>
+            <owl_tree count_field="product_count"></owl_tree>
         </field>
     </record>
 

@@ -35,6 +35,7 @@ odoo.define(
       components: { TreeItem },
       props: {
         item: {},
+        countField: "",
       },
       template: "owl_tutorial_views.TreeItem",
     });
