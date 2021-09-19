@@ -99,7 +99,8 @@ odoo.define("owl_tutorial_views.OWLTreeModel", function (require) {
     __load: function (params) {
       this.modelName = params.modelName;
       this.domain = [["parent_id", "=", false]];
-      // this.domain = params.domain;
+      // this.domain = params.domain; // It is the better way of doing that
+      // but we will evolve our module later.
       this.data = {};
       return this._fetchData();
     },

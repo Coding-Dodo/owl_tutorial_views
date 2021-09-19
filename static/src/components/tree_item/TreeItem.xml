@@ -11,7 +11,11 @@
                 <span t-else="">
                     <t t-esc="props.item.display_name"/>
                 </span>
-                <span class="badge badge-primary badge-pill" t-esc="props.item.product_count">4</span>
+                <span 
+                    t-if="props.countField !== '' and props.item.hasOwnProperty(props.countField)" 
+                    class="badge badge-primary badge-pill" 
+                    t-esc="props.item[props.countField]">
+                </span>
             </div>
             <t t-if="props.item.child_id.length > 0">
                 <div class="d-flex pl-4 py-1 flex-row treeview" t-if="props.item.children and props.item.children.length > 0 and state.childrenVisible">

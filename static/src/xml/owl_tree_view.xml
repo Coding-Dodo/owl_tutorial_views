@@ -5,7 +5,7 @@
         <div class="d-flex p-2 flex-row owl-tree-root">
             <div class="list-group">
                 <t t-foreach="props.items" t-as="item">
-                    <TreeItem item="item"/>
+                    <TreeItem item="item" countField="state.countField"/>
                 </t>
             </div>
         </div>
