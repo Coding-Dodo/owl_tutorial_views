@@ -39,10 +39,12 @@ odoo.define("owl_tutorial_views.OWLTreeModel", function (require) {
     },
 
     /**
-     * Add a groupBy to rowGroupBys or colGroupBys according to provided type.
+     * Make a RPC call to get the child of the target itm then navigates
+     * the nodes to the target the item and assign its "children" property
+     * to the result of the RPC call.
      *
-     * @param {string} groupBy
-     * @param {'row'|'col'} type
+     * @param {integer} parentId Category we will "open/expand"
+     * @param {string} path The parent_path represents the parents ids like "1/3/32/123/"
      */
     expandChildrenOf: async function (parentId, path) {
       var self = this;
@@ -99,8 +101,7 @@ odoo.define("owl_tutorial_views.OWLTreeModel", function (require) {
     __load: function (params) {
       this.modelName = params.modelName;
       this.domain = [["parent_id", "=", false]];
-      // this.domain = params.domain; // It is the better way of doing that
-      // but we will evolve our module later.
+      // this.domain = params.domain;
       this.data = {};
       return this._fetchData();
     },
