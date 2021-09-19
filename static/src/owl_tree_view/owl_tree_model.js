@@ -4,11 +4,47 @@ odoo.define("owl_tutorial_views.OWLTreeModel", function (require) {
   var AbstractModel = require("web.AbstractModel");
 
   const OWLTreeModel = AbstractModel.extend({
+    changeParent: async function (id, parent_id) {
+      await this._rpc({
+        model: this.modelName,
+        method: "write",
+        args: [
+          [id],
+          {
+            parent_id: parent_id,
+          },
+        ],
+      });
+    },
+
+    refreshNode: async function (id) {
+      var self = this;
+      var result = null;
+      await this._rpc({
+        model: this.modelName,
+        method: "search_read",
+        kwargs: {
+          domain: [["id", "=", id]],
+        },
+      }).then(function (itemUpdated) {
+        let path = itemUpdated[0].parent_path;
+        let target_node = self.__target_parent_node_with_path(
+          path.split("/").filter((i) => i),
+          self.data.items
+        );
+        target_node = itemUpdated[0];
+        result = itemUpdated[0];
+      });
+      return result;
+    },
+
     /**
-     * Add a groupBy to rowGroupBys or colGroupBys according to provided type.
+     * Make a RPC call to get the child of the target itm then navigates
+     * the nodes to the target the item and assign its "children" property
+     * to the result of the RPC call.
      *
-     * @param {string} groupBy
-     * @param {'row'|'col'} type
+     * @param {integer} parentId Category we will "open/expand"
+     * @param {string} path The parent_path represents the parents ids like "1/3/32/123/"
      */
     expandChildrenOf: async function (parentId, path) {
       var self = this;
@@ -24,6 +60,7 @@ odoo.define("owl_tutorial_views.OWLTreeModel", function (require) {
           self.data.items
         );
         target_node.children = children;
+        target_node.child_id = children.map((i) => i.id);
       });
     },
 
@@ -70,9 +107,10 @@ odoo.define("owl_tutorial_views.OWLTreeModel", function (require) {
     },
 
     __reload: function (handle, params) {
-      if ("domain" in params) {
-        this.domain = params.domain;
-      }
+      // if ("domain" in params) {
+      //   this.domain = params.domain;
+      // }
+      this.domain = [["parent_id", "=", false]];
       return this._fetchData();
     },
 

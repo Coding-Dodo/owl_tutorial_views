@@ -3,6 +3,7 @@ odoo.define(
   function (require) {
     "use strict";
     const { Component } = owl;
+    const { debounce } = owl.utils;
     const patchMixin = require("web.patchMixin");
 
     const { useState } = owl.hooks;
@@ -15,6 +16,7 @@ odoo.define(
         super(...args);
         this.state = useState({
           childrenVisible: false,
+          isDraggedOn: false,
         });
       }
 
@@ -29,12 +31,47 @@ odoo.define(
           childrenVisible: !this.state.childrenVisible,
         });
       }
+
+      onDragstart(event) {
+        event.dataTransfer.setData("TreeItem", JSON.stringify(this.props.item));
+      }
+
+      onDragover() {}
+
+      onDragenter() {
+        Object.assign(this.state, { isDraggedOn: true });
+      }
+
+      onDragleave() {
+        Object.assign(this.state, { isDraggedOn: false });
+      }
+
+      onDrop(event) {
+        Object.assign(this.state, { isDraggedOn: false });
+        let droppedItem = JSON.parse(event.dataTransfer.getData("TreeItem"));
+        if (
+          droppedItem.id == this.props.item.id ||
+          droppedItem.parent_id[0] == this.props.item.id
+        ) {
+          console.log("Drop inside itself or same parent has no effect");
+          return;
+        }
+        if (this.props.item.parent_path.startsWith(droppedItem.parent_path)) {
+          console.log("Oops, drop inside child item is forbidden.");
+          return;
+        }
+        this.trigger("change_item_tree", {
+          itemMoved: droppedItem,
+          newParent: this.props.item,
+        });
+      }
     }
 
     Object.assign(TreeItem, {
       components: { TreeItem },
       props: {
         item: {},
+        countField: "",
       },
       template: "owl_tutorial_views.TreeItem",
     });

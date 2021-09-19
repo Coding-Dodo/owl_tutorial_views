@@ -2,12 +2,9 @@ odoo.define("owl_tutorial_views.OWLTreeRenderer", function (require) {
   "use strict";
 
   const AbstractRendererOwl = require("web.AbstractRendererOwl");
-  const core = require("web.core");
   const patchMixin = require("web.patchMixin");
   const QWeb = require("web.QWeb");
   const session = require("web.session");
-
-  const _t = core._t;
 
   const { useState } = owl.hooks;
 
@@ -17,13 +14,13 @@ odoo.define("owl_tutorial_views.OWLTreeRenderer", function (require) {
       this.qweb = new QWeb(this.env.isDebug(), { _s: session.origin });
       this.state = useState({
         localItems: props.items || [],
+        countField: "",
       });
-    }
-
-    willUpdateProps(nextProps) {
-      Object.assign(this.state, {
-        localItems: nextProps.items,
-      });
+      if (this.props.arch.attrs.count_field) {
+        Object.assign(this.state, {
+          countField: this.props.arch.attrs.count_field,
+        });
+      }
     }
   }
 
@@ -33,14 +30,9 @@ odoo.define("owl_tutorial_views.OWLTreeRenderer", function (require) {
   Object.assign(OWLTreeRenderer, {
     components,
     defaultProps: {
-      expandedCategories: [],
       items: [],
     },
     props: {
-      expandedCategories: {
-        type: Array,
-        optional: true,
-      },
       arch: {
         type: Object,
         optional: true,
