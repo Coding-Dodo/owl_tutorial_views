@@ -33,6 +33,11 @@ odoo.define("owl_tutorial_views.OWLTreeController", function (require) {
       this.update({}, { reload: false });
     },
 
+    /**
+     * @param {Object} ev
+     * @param {Object} ev.data.itemMoved is the item that has been dragged
+     * @param {Object} ev.data.newParent is the new target parent of the dropped item
+     */
     _onChangeItemTree: async function (ev) {
       ev.stopPropagation();
       let itemMoved = ev.data.itemMoved;

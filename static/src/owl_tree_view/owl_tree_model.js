@@ -4,6 +4,13 @@ odoo.define("owl_tutorial_views.OWLTreeModel", function (require) {
   var AbstractModel = require("web.AbstractModel");
 
   const OWLTreeModel = AbstractModel.extend({
+    /**
+     * Make an RPC 'write' method call to update the parent_id of
+     * an existing record.
+     *
+     * @param {integer} id ID Of the item we want to update
+     * @param {integer} parent_id The parent item ID
+     */
     changeParent: async function (id, parent_id) {
       await this._rpc({
         model: this.modelName,
@@ -17,15 +24,20 @@ odoo.define("owl_tutorial_views.OWLTreeModel", function (require) {
       });
     },
 
+    /**
+     * Refresh a node get fresh data from the server for a given item.
+     * A search_read is executed via RPC Call and then the item is modified
+     * in place in the hierarchical tree structure.
+     *
+     * @param {integer} id ID Of the item we want to refresh
+     */
     refreshNode: async function (id) {
       var self = this;
       var result = null;
       await this._rpc({
         model: this.modelName,
-        method: "search_read",
-        kwargs: {
-          domain: [["id", "=", id]],
-        },
+        method: "read",
+        args: [[id], []],
       }).then(function (itemUpdated) {
         let path = itemUpdated[0].parent_path;
         let target_node = self.__target_parent_node_with_path(
@@ -39,7 +51,7 @@ odoo.define("owl_tutorial_views.OWLTreeModel", function (require) {
     },
 
     /**
-     * Make a RPC call to get the child of the target itm then navigates
+     * Make an RPC call to get the child of the target itm then navigates
      * the nodes to the target the item and assign its "children" property
      * to the result of the RPC call.
      *
