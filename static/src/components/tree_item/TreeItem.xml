@@ -14,7 +14,7 @@
             >
                 <a href="#" t-on-click.stop.prevent="toggleChildren" t-if="props.item.child_id.length > 0">
                     <t t-esc="props.item.display_name"/>
-                    <i t-attf-class="pl-2 fa {{ state.childrenVisible ? 'fa-caret-down': 'fa-caret-right'}}" ></i>
+                    <i t-attf-class="pl-2 fa {{ props.item.childrenVisible ? 'fa-caret-down': 'fa-caret-right'}}" ></i>
                 </a>
                 <span t-else="">
                     <t t-esc="props.item.display_name"/>
@@ -26,7 +26,7 @@
                 </span>
             </div>
             <t t-if="props.item.child_id.length > 0">
-                <div class="d-flex pl-4 py-1 flex-row treeview" t-if="props.item.children and props.item.children.length > 0 and state.childrenVisible">
+                <div class="d-flex pl-4 py-1 flex-row treeview" t-if="props.item.children and props.item.children.length > 0 and props.item.childrenVisible">
                     <div class="list-group">
                         <t t-foreach="props.item.children" t-as="child_item" t-key="child_item.id">
                             <TreeItem item="child_item"/>

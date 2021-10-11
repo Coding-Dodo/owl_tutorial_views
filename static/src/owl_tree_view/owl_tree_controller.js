@@ -26,10 +26,14 @@ odoo.define("owl_tutorial_views.OWLTreeController", function (require) {
      */
     _onTreeItemClicked: async function (ev) {
       ev.stopPropagation();
-      await this.model.expandChildrenOf(
-        ev.data.data.id,
-        ev.data.data.parent_path
-      );
+      if (ev.data.data.children === undefined) {
+        await this.model.expandChildrenOf(
+          ev.data.data.id,
+          ev.data.data.parent_path
+        );
+      } else {
+        this.model.toggleChildrenVisibleForItem(ev.data.data);
+      }
       this.update({}, { reload: false });
     },
 

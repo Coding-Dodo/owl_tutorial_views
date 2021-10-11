@@ -3,9 +3,7 @@ odoo.define(
   function (require) {
     "use strict";
     const { Component } = owl;
-    const { debounce } = owl.utils;
     const patchMixin = require("web.patchMixin");
-
     const { useState } = owl.hooks;
 
     class TreeItem extends Component {
@@ -15,21 +13,14 @@ odoo.define(
       constructor(...args) {
         super(...args);
         this.state = useState({
-          childrenVisible: false,
           isDraggedOn: false,
         });
       }
 
       toggleChildren() {
-        if (
-          this.props.item.child_id.length > 0 &&
-          this.props.item.children == undefined
-        ) {
+        if (this.props.item.child_id.length > 0) {
           this.trigger("tree_item_clicked", { data: this.props.item });
         }
-        Object.assign(this.state, {
-          childrenVisible: !this.state.childrenVisible,
-        });
       }
 
       onDragstart(event) {

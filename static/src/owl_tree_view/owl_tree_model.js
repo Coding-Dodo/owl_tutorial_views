@@ -73,9 +73,36 @@ odoo.define("owl_tutorial_views.OWLTreeModel", function (require) {
         );
         target_node.children = children;
         target_node.child_id = children.map((i) => i.id);
+        target_node.childrenVisible = true;
       });
     },
 
+    toggleChildrenVisibleForItem: async function (item) {
+      var target_node = this.__target_parent_node_with_path(
+        item.parent_path.split("/").filter((i) => i),
+        this.data.items
+      );
+      target_node.childrenVisible = !target_node.childrenVisible;
+    },
+
+    recursivelyOpenParents: async function (item) {
+      var self = this;
+      await this._rpc({
+        model: this.modelName,
+        method: "read",
+        args: [[item.parent_id[0]], []],
+      }).then(async function (parent) {
+        if (parent[0] && parent[0].id) {
+          const directParent = parent[0];
+          directParent.children = [item];
+          directParent.childrenVisible = true;
+          return await self.recursivelyOpenParents(directParent);
+        } else {
+          self.data.items = [item];
+          return true;
+        }
+      });
+    },
     /**
      * Search for the Node corresponding to the given path.
      * Paths are present in the property `parent_path` of any nested item they are
@@ -119,11 +146,12 @@ odoo.define("owl_tutorial_views.OWLTreeModel", function (require) {
     },
 
     __reload: function (handle, params) {
-      // if ("domain" in params) {
-      //   this.domain = params.domain;
-      // }
       this.domain = [["parent_id", "=", false]];
-      return this._fetchData();
+      if (params && params.domain && params.domain.length > 0) {
+        return this._fetchFilteredData(params.domain);
+      } else {
+        return this._fetchData();
+      }
     },
 
     _fetchData: function () {
@@ -136,6 +164,21 @@ odoo.define("owl_tutorial_views.OWLTreeModel", function (require) {
         },
       }).then(function (result) {
         self.data.items = result;
+      });
+    },
+
+    _fetchFilteredData: async function (domain) {
+      var self = this;
+      await this._rpc({
+        model: this.modelName,
+        method: "search_read",
+        kwargs: {
+          domain: domain,
+        },
+      }).then(async function (result) {
+        for (const item of result) {
+          return await self.recursivelyOpenParents(item);
+        }
       });
     },
   });
