@@ -3,7 +3,6 @@ odoo.define(
   function (require) {
     "use strict";
     const { Component } = owl;
-    const patchMixin = require("web.patchMixin");
     const { useState } = owl.hooks;
 
     class TreeItem extends Component {
@@ -67,6 +66,6 @@ odoo.define(
       template: "owl_tutorial_views.TreeItem",
     });
 
-    return patchMixin(TreeItem);
+    return TreeItem;
   }
 );

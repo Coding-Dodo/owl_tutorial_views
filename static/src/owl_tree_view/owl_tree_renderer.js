@@ -2,7 +2,6 @@ odoo.define("owl_tutorial_views.OWLTreeRenderer", function (require) {
   "use strict";
 
   const AbstractRendererOwl = require("web.AbstractRendererOwl");
-  const patchMixin = require("web.patchMixin");
   const QWeb = require("web.QWeb");
   const session = require("web.session");
 
@@ -49,8 +48,8 @@ odoo.define("owl_tutorial_views.OWLTreeRenderer", function (require) {
         optional: true,
       },
     },
-    template: "owl_tutorial_views.OWLTreeRenderer",
+    template: "OWLTreeRenderer",
   });
 
-  return patchMixin(OWLTreeRenderer);
+  return OWLTreeRenderer;
 });
