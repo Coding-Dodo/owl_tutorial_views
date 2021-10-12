@@ -4,6 +4,9 @@ odoo.define("owl_tutorial_views.OWLTreeRenderer", function (require) {
   const AbstractRendererOwl = require("web.AbstractRendererOwl");
   const QWeb = require("web.QWeb");
   const session = require("web.session");
+  const {
+    TreeItem,
+  } = require("@owl_tutorial_views/components/tree_item/TreeItem");
 
   const { useState } = owl.hooks;
 
@@ -23,9 +26,7 @@ odoo.define("owl_tutorial_views.OWLTreeRenderer", function (require) {
     }
   }
 
-  const components = {
-    TreeItem: require("owl_tutorial_views/static/src/components/tree_item/TreeItem.js"),
-  };
+  const components = { TreeItem };
   Object.assign(OWLTreeRenderer, {
     components,
     defaultProps: {
