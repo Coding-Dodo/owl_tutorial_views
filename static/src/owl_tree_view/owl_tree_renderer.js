@@ -48,7 +48,7 @@ odoo.define("owl_tutorial_views.OWLTreeRenderer", function (require) {
         optional: true,
       },
     },
-    template: "OWLTreeRenderer",
+    template: "owl_tutorial_views.OWLTreeRenderer",
   });
 
   return OWLTreeRenderer;
