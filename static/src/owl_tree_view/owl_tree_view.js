@@ -3,7 +3,7 @@ odoo.define("owl_tutorial_views.OWLTreeView", function (require) {
 
   const OWLTreeController = require("owl_tutorial_views.OWLTreeController");
   const OWLTreeModel = require("owl_tutorial_views.OWLTreeModel");
-  const OWLTreeRenderer = require("owl_tutorial_views.OWLTreeRenderer");
+  const { OWLTreeRenderer } = require("owl_tutorial_views.OWLTreeRenderer");
   const AbstractView = require("web.AbstractView");
   const core = require("web.core");
   const RendererWrapper = require("web.RendererWrapper");

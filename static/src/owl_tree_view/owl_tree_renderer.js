@@ -1,56 +1,48 @@
-odoo.define("owl_tutorial_views.OWLTreeRenderer", function (require) {
-  "use strict";
+/** @odoo-module alias=owl_tutorial_views.OWLTreeRenderer default=0 **/
+const { useState } = owl.hooks;
+import AbstractRendererOwl from "web.AbstractRendererOwl";
+import QWeb from "web.QWeb";
+import session from "web.session";
+import { TreeItem } from "@owl_tutorial_views/components/tree_item/TreeItem";
 
-  const AbstractRendererOwl = require("web.AbstractRendererOwl");
-  const QWeb = require("web.QWeb");
-  const session = require("web.session");
-  const {
-    TreeItem,
-  } = require("@owl_tutorial_views/components/tree_item/TreeItem");
-
-  const { useState } = owl.hooks;
-
-  class OWLTreeRenderer extends AbstractRendererOwl {
-    constructor(parent, props) {
-      super(...arguments);
-      this.qweb = new QWeb(this.env.isDebug(), { _s: session.origin });
-      this.state = useState({
-        localItems: props.items || [],
-        countField: "",
+export class OWLTreeRenderer extends AbstractRendererOwl {
+  constructor(parent, props) {
+    super(...arguments);
+    this.qweb = new QWeb(this.env.isDebug(), { _s: session.origin });
+    this.state = useState({
+      localItems: props.items || [],
+      countField: "",
+    });
+    if (this.props.arch.attrs.count_field) {
+      Object.assign(this.state, {
+        countField: this.props.arch.attrs.count_field,
       });
-      if (this.props.arch.attrs.count_field) {
-        Object.assign(this.state, {
-          countField: this.props.arch.attrs.count_field,
-        });
-      }
     }
   }
+}
 
-  const components = { TreeItem };
-  Object.assign(OWLTreeRenderer, {
-    components,
-    defaultProps: {
-      items: [],
+const components = { TreeItem };
+Object.assign(OWLTreeRenderer, {
+  components,
+  defaultProps: {
+    items: [],
+  },
+  props: {
+    arch: {
+      type: Object,
+      optional: true,
     },
-    props: {
-      arch: {
-        type: Object,
-        optional: true,
-      },
-      items: {
-        type: Array,
-      },
-      isEmbedded: {
-        type: Boolean,
-        optional: true,
-      },
-      noContentHelp: {
-        type: String,
-        optional: true,
-      },
+    items: {
+      type: Array,
     },
-    template: "owl_tutorial_views.OWLTreeRenderer",
-  });
-
-  return OWLTreeRenderer;
+    isEmbedded: {
+      type: Boolean,
+      optional: true,
+    },
+    noContentHelp: {
+      type: String,
+      optional: true,
+    },
+  },
+  template: "owl_tutorial_views.OWLTreeRenderer",
 });
