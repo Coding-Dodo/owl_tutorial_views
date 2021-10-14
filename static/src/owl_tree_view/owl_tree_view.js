@@ -4,8 +4,8 @@ import { XMLParser } from "@web/core/utils/xml";
 import { useModel } from "@web/views/helpers/model";
 import { standardViewProps } from "@web/views/helpers/standard_view_props";
 import { Layout } from "@web/views/layout";
-import { OWLTreeModel } from "@owl_tutorial_views/owl_tree_view/owl_tree_model";
-import { OWLTreeRenderer } from "owl_tutorial_views.OWLTreeRenderer";
+import OWLTreeModel from "@owl_tutorial_views/owl_tree_view/owl_tree_model";
+import OWLTreeRenderer from "owl_tutorial_views.OWLTreeRenderer";
 
 class OWLTreeView extends owl.Component {
   /**

@@ -2,7 +2,7 @@
 import { Model } from "@web/views/helpers/model";
 import { KeepLast } from "@web/core/utils/concurrency";
 
-export class OWLTreeModel extends Model {
+export default class OWLTreeModel extends Model {
   setup(params, { orm }) {
     this.modelName = params.resModel;
     this.orm = orm;

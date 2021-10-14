@@ -1,9 +1,9 @@
-/** @odoo-module alias=owl_tutorial_views.OWLTreeRenderer default=0 **/
+/** @odoo-module alias=owl_tutorial_views.OWLTreeRenderer **/
 const { useState } = owl.hooks;
 import AbstractRendererOwl from "web.AbstractRendererOwl";
 import { TreeItem } from "@owl_tutorial_views/components/tree_item/TreeItem";
 
-export class OWLTreeRenderer extends AbstractRendererOwl {
+export default class OWLTreeRenderer extends AbstractRendererOwl {
   constructor(parent, props) {
     super(...arguments);
     this.state = useState({
