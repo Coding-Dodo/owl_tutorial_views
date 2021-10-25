@@ -29,7 +29,7 @@
                 <div class="d-flex pl-4 py-1 flex-row treeview" t-if="props.item.children and props.item.children.length > 0 and props.item.childrenVisible">
                     <div class="list-group">
                         <t t-foreach="props.item.children" t-as="child_item" t-key="child_item.id">
-                            <TreeItem item="child_item"/>
+                            <TreeItem item="child_item" countField="props.countField"/>
                         </t>
                     </div>
                 </div>
