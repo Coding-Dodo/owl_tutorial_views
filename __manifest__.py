@@ -20,7 +20,6 @@
             "/owl_tutorial_views/static/src/components/tree_item/TreeItem.js",
             "/owl_tutorial_views/static/src/owl_tree_view/owl_tree_view.js",
             "/owl_tutorial_views/static/src/owl_tree_view/owl_tree_model.js",
-            "/owl_tutorial_views/static/src/owl_tree_view/owl_tree_controller.js",
             "/owl_tutorial_views/static/src/owl_tree_view/owl_tree_renderer.js",
         ],
     },
